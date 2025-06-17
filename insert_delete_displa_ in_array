@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+int main() {
+    int a[100] = {2, 3, 6, 4, 3};
+    int n = 5;
+    int choice, i, pos, val;
+
+    while (1) {
+        printf("\n1.Insert  2.Delete  3.Display  4.Exit\nChoose option: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("Enter value to insert: ");
+            scanf("%d", &val);
+            printf("Enter position to insert (1 to %d): ", n + 1);
+            scanf("%d", &pos);
+
+            if (pos < 1 || pos > n + 1) {
+                printf("Invalid position!\n");
+                continue;
+            }
+
+            for (i = n; i >= pos; i--) {
+                a[i] = a[i - 1];
+            }
+            a[pos - 1] = val;
+            n++;
+            printf("Value inserted.\n");
+
+        } else if (choice == 2) {
+            if (n == 0) {
+                printf("Array is empty. Nothing to delete.\n");
+                continue;
+            }
+            printf("Enter position to delete (1 to %d): ", n);
+            scanf("%d", &pos);
+
+            if (pos < 1 || pos > n) {
+                printf("Invalid position!\n");
+                continue;
+            }
+
+            for (i = pos - 1; i < n - 1; i++) {
+                a[i] = a[i + 1];
+            }
+            n--;
+            printf("Value deleted.\n");
+
+        } else if (choice == 3) {
+            if (n == 0) {
+                printf("Array is empty.\n");
+            } else {
+                printf("Array elements: ");
+                for (i = 0; i < n; i++) {
+                    printf("%d ", a[i]);
+                }
+                printf("\n");
+            }
+
+        } else if (choice == 4) {
+            printf("Exiting program.\n");
+            break;
+
+        } else {
+            printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
