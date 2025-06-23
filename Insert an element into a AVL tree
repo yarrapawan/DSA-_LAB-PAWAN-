@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    struct node {
+        int key, height;
+        struct node *left, *right;
+    };
+
+    struct node *root = NULL;
+
+    int max(int a, int b) {
+        return (a > b) ? a : b;
+    }
+
+    int height(struct node *n) {
+        if (n == NULL) return 0;
+        return n->height;
+    }
+
+    int getBalance(struct node *n) {
+        if (n == NULL) return 0;
+        return height(n->left) - height(n->right);
+    }
+
+    struct node* rightRotate(struct node *y) {
+        struct node *x = y->left;
+        struct node *T2 = x->right;
+
+        x->right = y;
+        y->left = T2;
+
+        y->height = max(height(y->left), height(y->right)) + 1;
+        x->height = max(height(x->left), height(x->right)) + 1;
+
+        return x;
+    }
+
+    struct node* leftRotate(struct node *x) {
+        struct node *y = x->right;
+        struct node *T2 = y->left;
+
+        y->left = x;
+        x->right = T2;
+
+        x->height = max(height(x->left), height(x->right)) + 1;
+        y->height = max(height(y->left), height(y->right)) + 1;
+
+        return y;
+    }
+
+    int key;
+    printf("Enter key to insert: ");
+    scanf("%d", &key);
+
+    // Create new node
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->key = key;
+    newnode->left = newnode->right = NULL;
+    newnode->height = 1;
+
+    // Insert logic without using insert() function
+    if (root == NULL) {
+        root = newnode;
+    } else {
+        struct node *stack[100];  // for tracking path
+        int top = -1;
+        struct node *curr = root, *prev = NULL;
+
+        // Traverse and track the path
+        while (curr != NULL) {
+            stack[++top] = curr;
+            prev = curr;
+            if (key < curr->key)
+                curr = curr->left;
+            else
+                curr = curr->right;
+        }
+
+        if (key < prev->key)
+            prev->left = newnode;
+        else
+            prev->right = newnode;
+
+        // Update heights and perform rotations backtracking
+        while (top >= 0) {
+            struct node *temp = stack[top--];
+            temp->height = 1 + max(height(temp->left), height(temp->right));
+            int balance = getBalance(temp);
+
+            // Rotations
+            if (balance > 1 && key < temp->left->key) {
+                if (top >= 0) {
+                    if (stack[top]->left == temp)
+                        stack[top]->left = rightRotate(temp);
+                    else
+                        stack[top]->right = rightRotate(temp);
+                } else {
+                    root = rightRotate(temp);
+                }
+            }
+            else if (balance < -1 && key > temp->right->key) {
+                if (top >= 0) {
+                    if (stack[top]->left == temp)
+                        stack[top]->left = leftRotate(temp);
+                    else
+                        stack[top]->right = leftRotate(temp);
+                } else {
+                    root = leftRotate(temp);
+                }
+            }
+            else if (balance > 1 && key > temp->left->key) {
+                temp->left = leftRotate(temp->left);
+                if (top >= 0) {
+                    if (stack[top]->left == temp)
+                        stack[top]->left = rightRotate(temp);
+                    else
+                        stack[top]->right = rightRotate(temp);
+                } else {
+                    root = rightRotate(temp);
+                }
+            }
+            else if (balance < -1 && key < temp->right->key) {
+                temp->right = rightRotate(temp->right);
+                if (top >= 0) {
+                    if (stack[top]->left == temp)
+                        stack[top]->left = leftRotate(temp);
+                    else
+                        stack[top]->right = leftRotate(temp);
+                } else {
+                    root = leftRotate(temp);
+                }
+            }
+        }
+    }
+
+    printf("Inserted %d into AVL Tree.\n", key);
+    return 0;
+}
