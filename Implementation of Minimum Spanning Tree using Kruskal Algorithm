@@ -1,0 +1,58 @@
+#include <stdio.h>
+#define MAX 100
+#define INF 9999
+int main() {
+    int n, i, j, cost[MAX][MAX], parent[MAX];
+    int u, v, min, total = 0, ne = 0;
+
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter the adjacency matrix (use 0 for no edge):\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+            if (cost[i][j] == 0)
+                cost[i][j] = INF;
+        }
+    }
+
+    for (i = 0; i < n; i++)
+        parent[i] = i;
+
+    printf("Edges in MST using Kruskal's Algorithm:\n");
+
+    while (ne < n - 1) {
+        min = INF;
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                if (cost[i][j] < min) {
+                    min = cost[i][j];
+                    u = i;
+                    v = j;
+                }
+            }
+        }
+
+        int a = u;
+        while (parent[a] != a)
+            a = parent[a];
+
+        int b = v;
+        while (parent[b] != b)
+            b = parent[b];
+
+        if (a != b) {
+            printf("%d - %d : %d\n", u, v, min);
+            total += min;
+            ne++;
+            parent[b] = a;  // Union
+        }
+
+        cost[u][v] = cost[v][u] = INF;
+    }
+
+    printf("Total cost of Minimum Spanning Tree: %d\n", total);
+
+    return 0;
+}
