@@ -1,0 +1,56 @@
+#include <stdio.h>
+#define SIZE 10
+
+int main() {
+    int hash_table[SIZE];
+    int i, key, index, choice, count = 0;
+
+    // Initialize hash table
+    for (i = 0; i < SIZE; i++) {
+        hash_table[i] = -1;  // -1 indicates empty slot
+    }
+
+    while (1) {
+        printf("\n--- Hash Table (Linear Probing) ---\n");
+        printf("1. Insert\n2. Display\n3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            if (count == SIZE) {
+                printf("Hash Table is full. Cannot insert more.\n");
+            } else {
+                printf("Enter key to insert: ");
+                scanf("%d", &key);
+
+                index = key % SIZE;
+
+                // Linear probing
+                while (hash_table[index] != -1) {
+                    index = (index + 1) % SIZE;
+                }
+
+                hash_table[index] = key;
+                count++;
+                printf("Key %d inserted at index %d\n", key, index);
+            }
+
+        } else if (choice == 2) {
+            printf("Hash Table:\n");
+            for (i = 0; i < SIZE; i++) {
+                if (hash_table[i] != -1)
+                    printf("Index %d: %d\n", i, hash_table[i]);
+                else
+                    printf("Index %d: EMPTY\n", i);
+            }
+
+        } else if (choice == 3) {
+            break;
+
+        } else {
+            printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
