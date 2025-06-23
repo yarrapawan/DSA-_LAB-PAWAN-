@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    struct node {
+        int key;
+        struct node *left, *right;
+    };
+
+    // Manually create a small AVL Tree
+    struct node *node1, *node2, *node3, *root;
+
+    node1 = (struct node*)malloc(sizeof(struct node));
+    node2 = (struct node*)malloc(sizeof(struct node));
+    node3 = (struct node*)malloc(sizeof(struct node));
+
+    node1->key = 30; node1->left = node1->right = NULL;
+    node2->key = 20; node2->left = node2->right = NULL;
+    node3->key = 40; node3->left = node3->right = NULL;
+
+    node1->left = node2;
+    node1->right = node3;
+    root = node1;
+
+    // Input key to search
+    int key;
+    printf("Enter key to search in AVL Tree: ");
+    scanf("%d", &key);
+
+    // AVL Search logic directly in main
+    struct node *current = root;
+    int found = 0;
+
+    while (current != NULL) {
+        if (key == current->key) {
+            found = 1;
+            break;
+        } else if (key < current->key) {
+            current = current->left;
+        } else {
+            current = current->right;
+        }
+    }
+
+    if (found)
+        printf("Key %d found in AVL Tree.\n", key);
+    else
+        printf("Key %d not found in AVL Tree.\n", key);
+
+    return 0;
+}
