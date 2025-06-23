@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    struct node {
+        int data;
+        struct node *left;
+        struct node *right;
+    };
+
+    struct node *root = NULL, *newnode, *temp, *parent;
+    int choice, data;
+
+    // Create Tree (Manual Input)
+    int n, i;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    for (i = 0; i < n; i++) {
+        newnode = (struct node*)malloc(sizeof(struct node));
+        printf("Enter data for node %d: ", i+1);
+        scanf("%d", &data);
+        newnode->data = data;
+        newnode->left = newnode->right = NULL;
+
+        if (root == NULL) {
+            root = newnode;
+        } else {
+            temp = root;
+            while (1) {
+                parent = temp;
+                if (data < temp->data) {
+                    temp = temp->left;
+                    if (temp == NULL) {
+                        parent->left = newnode;
+                        break;
+                    }
+                } else {
+                    temp = temp->right;
+                    if (temp == NULL) {
+                        parent->right = newnode;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // Recursive Traversal Functions inside main
+    void inorder(struct node *node) {
+        if (node != NULL) {
+            inorder(node->left);
+            printf("%d ", node->data);
+            inorder(node->right);
+        }
+    }
+
+    void preorder(struct node *node) {
+        if (node != NULL) {
+            printf("%d ", node->data);
+            preorder(node->left);
+            preorder(node->right);
+        }
+    }
+
+    void postorder(struct node *node) {
+        if (node != NULL) {
+            postorder(node->left);
+            postorder(node->right);
+            printf("%d ", node->data);
+        }
+    }
+
+    // Menu for Traversals
+    while (1) {
+        printf("\n--- Tree Traversals ---\n");
+        printf("1. Inorder\n2. Preorder\n3. Postorder\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("Inorder Traversal: ");
+            inorder(root);
+            printf("\n");
+        } else if (choice == 2) {
+            printf("Preorder Traversal: ");
+            preorder(root);
+            printf("\n");
+        } else if (choice == 3) {
+            printf("Postorder Traversal: ");
+            postorder(root);
+            printf("\n");
+        } else if (choice == 4) {
+            break;
+        } else {
+            printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
