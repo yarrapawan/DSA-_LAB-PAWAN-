@@ -1,0 +1,191 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    struct node {
+        int key, height;
+        struct node *left, *right;
+    };
+
+    int max(int a, int b) {
+        return (a > b) ? a : b;
+    }
+
+    int height(struct node *n) {
+        if (n == NULL) return 0;
+        return n->height;
+    }
+
+    int getBalance(struct node *n) {
+        if (n == NULL) return 0;
+        return height(n->left) - height(n->right);
+    }
+
+    struct node* rightRotate(struct node *y) {
+        struct node *x = y->left;
+        struct node *T2 = x->right;
+
+        x->right = y;
+        y->left = T2;
+
+        y->height = max(height(y->left), height(y->right)) + 1;
+        x->height = max(height(x->left), height(x->right)) + 1;
+
+        return x;
+    }
+
+    struct node* leftRotate(struct node *x) {
+        struct node *y = x->right;
+        struct node *T2 = y->left;
+
+        y->left = x;
+        x->right = T2;
+
+        x->height = max(height(x->left), height(x->right)) + 1;
+        y->height = max(height(y->left), height(y->right)) + 1;
+
+        return y;
+    }
+
+    struct node* minValue(struct node* node) {
+        struct node* current = node;
+        while (current->left != NULL)
+            current = current->left;
+        return current;
+    }
+
+    // Sample AVL tree construction manually (for test)
+    struct node *root = NULL, *node1, *node2, *node3;
+    node1 = (struct node*)malloc(sizeof(struct node));
+    node2 = (struct node*)malloc(sizeof(struct node));
+    node3 = (struct node*)malloc(sizeof(struct node));
+
+    node1->key = 30; node1->left = node1->right = NULL; node1->height = 1;
+    node2->key = 20; node2->left = node2->right = NULL; node2->height = 1;
+    node3->key = 40; node3->left = node3->right = NULL; node3->height = 1;
+
+    node1->left = node2;
+    node1->right = node3;
+    node1->height = 1 + max(height(node1->left), height(node1->right));
+    root = node1;
+
+    // Start deletion logic
+    int key;
+    printf("Enter key to delete: ");
+    scanf("%d", &key);
+
+    // Deletion process (recursive-like, inline)
+    struct node* stack[100];
+    int top = -1;
+    struct node* curr = root, *parent = NULL;
+
+    while (curr != NULL && curr->key != key) {
+        stack[++top] = curr;
+        parent = curr;
+        if (key < curr->key)
+            curr = curr->left;
+        else
+            curr = curr->right;
+    }
+
+    if (curr == NULL) {
+        printf("Key not found.\n");
+        return 0;
+    }
+
+    // Case 1 & 2: Node with 0 or 1 child
+    if (curr->left == NULL || curr->right == NULL) {
+        struct node* temp = curr->left ? curr->left : curr->right;
+
+        if (parent == NULL) {
+            root = temp;
+        } else {
+            if (parent->left == curr)
+                parent->left = temp;
+            else
+                parent->right = temp;
+        }
+        free(curr);
+    }
+    // Case 3: Node with 2 children
+    else {
+        struct node* succ = minValue(curr->right);
+        int succ_key = succ->key;
+
+        // Recursively delete successor node
+        // Push current node to stack for rebalancing
+        stack[++top] = curr;
+        int del_key = succ_key;
+
+        // Traverse again to delete successor
+        struct node* curr2 = curr->right, *par2 = curr;
+        while (curr2->key != del_key) {
+            stack[++top] = curr2;
+            par2 = curr2;
+            curr2 = curr2->left;
+        }
+
+        // Replace curr2 with its right child
+        if (par2->left == curr2)
+            par2->left = curr2->right;
+        else
+            par2->right = curr2->right;
+
+        curr->key = del_key;
+        free(curr2);
+    }
+
+    // Rebalance AVL Tree
+    while (top >= 0) {
+        struct node *temp = stack[top--];
+        temp->height = 1 + max(height(temp->left), height(temp->right));
+        int balance = getBalance(temp);
+
+        if (balance > 1 && getBalance(temp->left) >= 0) {
+            if (top >= 0) {
+                if (stack[top]->left == temp)
+                    stack[top]->left = rightRotate(temp);
+                else
+                    stack[top]->right = rightRotate(temp);
+            } else {
+                root = rightRotate(temp);
+            }
+        }
+        else if (balance > 1 && getBalance(temp->left) < 0) {
+            temp->left = leftRotate(temp->left);
+            if (top >= 0) {
+                if (stack[top]->left == temp)
+                    stack[top]->left = rightRotate(temp);
+                else
+                    stack[top]->right = rightRotate(temp);
+            } else {
+                root = rightRotate(temp);
+            }
+        }
+        else if (balance < -1 && getBalance(temp->right) <= 0) {
+            if (top >= 0) {
+                if (stack[top]->left == temp)
+                    stack[top]->left = leftRotate(temp);
+                else
+                    stack[top]->right = leftRotate(temp);
+            } else {
+                root = leftRotate(temp);
+            }
+        }
+        else if (balance < -1 && getBalance(temp->right) > 0) {
+            temp->right = rightRotate(temp->right);
+            if (top >= 0) {
+                if (stack[top]->left == temp)
+                    stack[top]->left = leftRotate(temp);
+                else
+                    stack[top]->right = leftRotate(temp);
+            } else {
+                root = leftRotate(temp);
+            }
+        }
+    }
+
+    printf("Key deleted and AVL Tree rebalanced.\n");
+
+    return 0;
+}
