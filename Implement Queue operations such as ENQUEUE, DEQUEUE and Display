@@ -5,7 +5,7 @@ int main() {
     int queue[SIZE];
     int front = -1, rear = -1;
     int choice, item, i;
-
+printf("My name is Yarra Pawan 192424294");
     while (1) {
         printf("\n--- Queue Operations ---\n");
         printf("1. ENQUEUE\n2. DEQUEUE\n3. DISPLAY\n4. EXIT\n");
