@@ -6,7 +6,7 @@ int main() {
         int key, height;
         struct node *left, *right;
     };
-
+    printf("My name is Yarra Pawan 192424294");
     int max(int a, int b) {
         return (a > b) ? a : b;
     }
@@ -93,7 +93,7 @@ int main() {
         return 0;
     }
 
-    // Case 1 & 2: Node with 0 or 1 child
+  
     if (curr->left == NULL || curr->right == NULL) {
         struct node* temp = curr->left ? curr->left : curr->right;
 
@@ -107,25 +107,20 @@ int main() {
         }
         free(curr);
     }
-    // Case 3: Node with 2 children
     else {
         struct node* succ = minValue(curr->right);
         int succ_key = succ->key;
 
-        // Recursively delete successor node
-        // Push current node to stack for rebalancing
+      
         stack[++top] = curr;
         int del_key = succ_key;
 
-        // Traverse again to delete successor
         struct node* curr2 = curr->right, *par2 = curr;
         while (curr2->key != del_key) {
             stack[++top] = curr2;
             par2 = curr2;
             curr2 = curr2->left;
         }
-
-        // Replace curr2 with its right child
         if (par2->left == curr2)
             par2->left = curr2->right;
         else
@@ -135,7 +130,6 @@ int main() {
         free(curr2);
     }
 
-    // Rebalance AVL Tree
     while (top >= 0) {
         struct node *temp = stack[top--];
         temp->height = 1 + max(height(temp->left), height(temp->right));
