@@ -4,6 +4,7 @@ int main()
 	int n;
 	int i;
 	int factorial=1;
+        printf("My name is Yarra Pawan 192424294");
 	printf("enter the value of n");
 	scanf("%d",&n);
 	for(i=1;i<=n;i++)
