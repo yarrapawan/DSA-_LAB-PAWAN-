@@ -7,11 +7,9 @@ int main() {
         struct node *left;
         struct node *right;
     };
-
+   printf("My name is Yarra Pawan 192424294");
     struct node *root = NULL, *newnode, *temp, *parent;
     int choice, data;
-
-    // Create Tree (Manual Input)
     int n, i;
     printf("Enter number of nodes: ");
     scanf("%d", &n);
@@ -45,7 +43,6 @@ int main() {
         }
     }
 
-    // Recursive Traversal Functions inside main
     void inorder(struct node *node) {
         if (node != NULL) {
             inorder(node->left);
@@ -70,7 +67,6 @@ int main() {
         }
     }
 
-    // Menu for Traversals
     while (1) {
         printf("\n--- Tree Traversals ---\n");
         printf("1. Inorder\n2. Preorder\n3. Postorder\n4. Exit\n");
