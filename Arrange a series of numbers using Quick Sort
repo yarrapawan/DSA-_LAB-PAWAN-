@@ -2,8 +2,7 @@
 
 int main() {
     int a[100], n, i;
-
-    // Quick Sort logic within main
+printf("My name is Yarra Pawan 192424294");
     int partition(int a[], int low, int high) {
         int pivot = a[high];
         int i = low - 1;
