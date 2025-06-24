@@ -5,9 +5,9 @@ int main() {
     struct node {
         int key;
         struct node *left, *right;
-    };
+printf("My name is Yarra Pawan 192424294");
 
-    // Manually create a small AVL Tree
+    };
     struct node *node1, *node2, *node3, *root;
 
     node1 = (struct node*)malloc(sizeof(struct node));
@@ -22,12 +22,10 @@ int main() {
     node1->right = node3;
     root = node1;
 
-    // Input key to search
     int key;
     printf("Enter key to search in AVL Tree: ");
     scanf("%d", &key);
 
-    // AVL Search logic directly in main
     struct node *current = root;
     int found = 0;
 
