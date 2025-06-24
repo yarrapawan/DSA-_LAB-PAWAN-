@@ -7,7 +7,7 @@ int main() {
     char infix[SIZE], postfix[SIZE], stack[SIZE];
     int i = 0, j = 0, top = -1;
     char ch;
-
+    printf("My name is Yarra Pawan 192424294");
     printf("Enter infix expression (e.g., A+B*C): ");
     scanf("%s", infix);
 
