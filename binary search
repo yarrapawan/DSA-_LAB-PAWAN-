@@ -8,6 +8,7 @@ int main()
     int target;
     int i;
     int found=0;
+    printf("My name is Yarra Pawan 192424294");
     printf("enter the size of the array");
     scanf("%d",&N);
     for(i=0;i<N;i++)
