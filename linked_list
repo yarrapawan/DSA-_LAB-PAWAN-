@@ -9,6 +9,7 @@ int main()
 	int n;
 	int i;
 	int value;
+        printf("My name is Yarra Pawan 192424294");
 	printf("enter the number of nodes");
 	scanf("%d",&n);
 	struct node *newnode = NULL;
