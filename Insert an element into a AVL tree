@@ -5,6 +5,8 @@ int main() {
     struct node {
         int key, height;
         struct node *left, *right;
+printf("My name is Yarra Pawan 192424294");
+
     };
 
     struct node *root = NULL;
@@ -53,13 +55,11 @@ int main() {
     printf("Enter key to insert: ");
     scanf("%d", &key);
 
-    // Create new node
+    
     struct node* newnode = (struct node*)malloc(sizeof(struct node));
     newnode->key = key;
     newnode->left = newnode->right = NULL;
     newnode->height = 1;
-
-    // Insert logic without using insert() function
     if (root == NULL) {
         root = newnode;
     } else {
@@ -67,7 +67,6 @@ int main() {
         int top = -1;
         struct node *curr = root, *prev = NULL;
 
-        // Traverse and track the path
         while (curr != NULL) {
             stack[++top] = curr;
             prev = curr;
@@ -82,13 +81,11 @@ int main() {
         else
             prev->right = newnode;
 
-        // Update heights and perform rotations backtracking
         while (top >= 0) {
             struct node *temp = stack[top--];
             temp->height = 1 + max(height(temp->left), height(temp->right));
             int balance = getBalance(temp);
 
-            // Rotations
             if (balance > 1 && key < temp->left->key) {
                 if (top >= 0) {
                     if (stack[top]->left == temp)
