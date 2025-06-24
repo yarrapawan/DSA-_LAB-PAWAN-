@@ -4,8 +4,7 @@
 int main() {
     int hash_table[SIZE];
     int i, key, index, choice, count = 0;
-
-    // Initialize hash table
+    printf("My name is Yarra Pawan 192424294");
     for (i = 0; i < SIZE; i++) {
         hash_table[i] = -1;  // -1 indicates empty slot
     }
@@ -25,7 +24,6 @@ int main() {
 
                 index = key % SIZE;
 
-                // Linear probing
                 while (hash_table[index] != -1) {
                     index = (index + 1) % SIZE;
                 }
