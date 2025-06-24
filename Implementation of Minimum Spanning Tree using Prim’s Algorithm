@@ -4,7 +4,7 @@ int main() {
     int graph[10][10];
     int visited[10], n, i, j, noOfEdges = 0;
     int min, u = 0, v = 0, totalCost = 0;
-
+printf("My name is Yarra Pawan 192424294");
     printf("Enter number of vertices: ");
     scanf("%d", &n);
 
